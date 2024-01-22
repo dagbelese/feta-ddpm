@@ -1,38 +1,10 @@
 <!-- #region -->
-# Med-DDPM: Conditional Diffusion Models for Semantic 3D Medical Image Synthesis (Whole-Head MRI & 4 Modalities MRI)
+# Semantic fetal MR image synthesis using Med-DDPM
 
-
-[[Paper](https://arxiv.org/pdf/2305.18453.pdf)]
-
-This repository contains the official implementation and pretrained model weights for our paper titled "Conditional Diffusion Models for Semantic 3D Medical Image Synthesis." Our research focuses on the utilization of diffusion models to generate realistic and high-quality 3D medical images while preserving semantic information. We trained our proposed method on both whole-head MRI and brain-extracted 4 modalities MRIs (<a href="http://braintumorsegmentation.org/">BraTS2021</a>).
-
-For the generation of the 4 modalities (T1, T1ce, T2, Flair), we trained this model using a selected set of 193 high-quality images from the BraTS2021 dataset. We have made our pretrained model weights available for download. Please feel free to use them for further research, and if you use our code or pretrained weights, kindly cite our paper.
-
+Semester project description
 
 ## Synthetic Samples for Given Input Mask:
 
-<table>
-  <tr>
-    <td align="center">
-      <strong>Input Mask</strong><br>
-      <img id="img_0" src="images/img_0.gif" alt="Input Mask" width="100%">
-    </td>
-    <td align="center">
-      <strong>Real Image</strong><br>
-      <img id="img_1" src="images/img_1.gif" alt="Real Image" width="100%">
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <strong>Synthetic Sample 1</strong><br>
-      <img id="img_2" src="images/img_2.gif" alt="Synthetic Sample 1" width="100%">
-    </td>
-    <td align="center">
-      <strong>Synthetic Sample 2</strong><br>
-      <img id="img_3" src="images/img_3.gif" alt="Synthetic Sample 2" width="100%">
-    </td>
-  </tr>
-</table>
 <!-- #endregion -->
 
 ## 🛠️ Setup 
@@ -95,39 +67,6 @@ whole-head MRI synthesis:$ ./scripts/sample.sh
 (BraTS) 4 modalities MRI synthesis:$ ./scripts/sample_brats.sh
 ```
 
-## 📋 ToDo List
-
-Your contributions to Med-DDPM are valuable! Here's our ongoing task list:
-
-- [x] Main model code release
-- [x] Release model weights 
-- [x] Implement fast sampling feature
-- [x] Release 4 modality model code & weights
-- [ ] Deploy model on HuggingFace for broader reach
-- [ ] Draft & release a comprehensive tutorial blog
-- [ ] Launch a Docker image
-
-## 📜 Citation
-
-If our work assists your research, kindly cite us:
-
-```
-@misc{https://doi.org/10.48550/arxiv.2305.18453,
-  doi = {10.48550/ARXIV.2305.18453},
-  url = {https://arxiv.org/abs/2305.18453},
-  author = {Zolnamar Dorjsembe and Hsing-Kuo Pao and Sodtavilan Odonchimed and Furen Xiao},
-  title = {Conditional Diffusion Models for Semantic 3D Medical Image Synthesis},
-  publisher = {arXiv},
-  year = {2023},
-}
-```
-
-## 💡 Acknowledgements
-
-Gratitude to these foundational repositories:
-
-1. [denoising-diffusion-pytorch](https://github.com/lucidrains/denoising-diffusion-pytorch)
-2. [guided-diffusion](https://github.com/openai/guided-diffusion)
 
 
 ```python
