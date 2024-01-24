@@ -271,7 +271,7 @@ class GaussianDiffusion(nn.Module):
         else:
             x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
             x_recon = self.denoise_fn(x_noisy, t)
-
+        
         if self.loss_type == 'l1':
             loss = (noise - x_recon).abs().mean()
         elif self.loss_type == 'l2':
@@ -381,7 +381,7 @@ class Trainer(object):
     def train(self):
         backwards = partial(loss_backwards, self.fp16)
         start_time = time.time()
-
+        
         while self.step < self.train_num_steps:
             accumulated_loss = []
             for i in range(self.gradient_accumulate_every):
@@ -434,6 +434,7 @@ class Trainer(object):
         print('training completed')
         end_time = time.time()
         execution_time = (end_time - start_time)/3600
+
         self.writer.add_hparams(
             {
                 "lr": self.train_lr,

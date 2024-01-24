@@ -1,1 +1,1 @@
-python3 ../sample.py --inputfolder ../dataset/whole_head/mask --exportfolder ../exports/ --input_size 128 --depth_size 128 --num_channels 64 --num_res_blocks 1 --batchsize 1 --num_samples 1 --weightfile ../model/model_128.pt
+python3 ../sample.py --inputfolder ../../dataset/testing/mask_preprocessed/ --exportfolder ../../synthesized_samples/Med-DDPM/testing_samples/ --input_size 160 --depth_size 160 --num_channels 64 --num_res_blocks 1 --batchsize 1 --num_samples 1 --num_class_labels 4 --timesteps 500 --weightfile ../checkpoints/feta_ddpm_l1/model-99.pt

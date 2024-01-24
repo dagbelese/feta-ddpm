@@ -59,7 +59,7 @@ class NiftiPairImageGenerator(Dataset):
             target_folder: str,
             input_size: int,
             depth_size: int,
-            input_channel: int = 3,
+            input_channel: int = 4,
             transform=None,
             target_transform=None,
             full_channel_mask=False,
@@ -82,14 +82,24 @@ class NiftiPairImageGenerator(Dataset):
         target_files = sorted(glob(os.path.join(self.target_folder, '*')))
         pairs = []
         for input_file, target_file in zip(input_files, target_files):
-            assert int("".join(re.findall("\d", input_file))) == int("".join(re.findall("\d", target_file)))
+           # assert int("".join(re.findall("\d", input_file))) == int("".join(re.findall("\d", target_file))) 
             pairs.append((input_file, target_file))
         return pairs
 
     def label2masks(self, masked_img):
         result_img = np.zeros(masked_img.shape + ( self.input_channel - 1,))
-        result_img[masked_img==LabelEnum.BRAINAREA.value, 0] = 1
-        result_img[masked_img==LabelEnum.TUMORAREA.value, 1] = 1
+       # result_img[masked_img==LabelEnum.BACKGROUND.value, 0] = 1
+       # result_img[masked_img==LabelEnum.TUMORAREA.value, 1] = 1
+       # result_img[masked_img==LabelEnum.BS.value, 0] = 1
+       # result_img[masked_img==LabelEnum.CBM.value, 1] = 1
+       # result_img[masked_img==LabelEnum.CSF.value, 2] = 1
+       # result_img[masked_img==LabelEnum.GM.value, 3] = 1
+       # result_img[masked_img==LabelEnum.LV.value, 4] = 1
+       # result_img[masked_img==LabelEnum.SGM.value, 5] = 1
+       # result_img[masked_img==LabelEnum.WM.value, 6] = 1
+        result_img[masked_img==LabelEnum.FLUID.value, 0] = 1
+        result_img[masked_img==LabelEnum.CORTEX.value, 1] = 1
+        result_img[masked_img==LabelEnum.REST.value, 2] = 1
         return result_img
 
     def read_image(self, file_path, pass_scaler=False):
@@ -118,7 +128,7 @@ class NiftiPairImageGenerator(Dataset):
 
     def resize_img_4d(self, input_img):
         h, w, d, c = input_img.shape
-        result_img = np.zeros((self.input_size, self.input_size, self.depth_size, 2))
+        result_img = np.zeros((self.input_size, self.input_size, self.depth_size, 3)) # 2  
         if h != self.input_size or w != self.input_size or d != self.depth_size:
             for ch in range(c):
                 buff = input_img.copy()[..., ch]
@@ -151,7 +161,7 @@ class NiftiPairImageGenerator(Dataset):
         input_img = self.read_image(input_file, pass_scaler=self.full_channel_mask)
         input_img = self.label2masks(input_img) if self.full_channel_mask else input_img
         input_img = self.resize_img(input_img) if not self.full_channel_mask else self.resize_img_4d(input_img)
-
+   
         target_img = self.read_image(target_file)
         target_img = self.resize_img(target_img)
 

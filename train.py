@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 # +
-from torchvision.transforms import RandomCrop, Compose, ToPILImage, Resize, ToTensor, Lambda
+from torchvision.transforms import RandomCrop, CenterCrop, RandomRotation, Compose, ToPILImage, Resize, ToTensor, Lambda
 from diffusion_model.trainer import GaussianDiffusion, Trainer
 from diffusion_model.unet import create_model
 from dataset import NiftiImageGenerator, NiftiPairImageGenerator
@@ -26,7 +26,7 @@ parser.add_argument('--epochs', type=int, default=100000)
 parser.add_argument('--timesteps', type=int, default=250)
 parser.add_argument('--save_and_sample_every', type=int, default=1000)
 parser.add_argument('--with_condition', action='store_true')
-parser.add_argument('-r', '--resume_weight', type=str, default="model/model_128.pt")
+parser.add_argument('-r', '--resume_weight', type=str, default="")
 args = parser.parse_args()
 
 inputfolder = args.inputfolder
@@ -51,7 +51,7 @@ transform = Compose([
 
 input_transform = Compose([
     Lambda(lambda t: torch.tensor(t).float()),
-    Lambda(lambda t: (t * 2) - 1),
+    Lambda(lambda t: (t * 2) - 1), 
     Lambda(lambda t: t.permute(3, 0, 1, 2)),
     Lambda(lambda t: t.transpose(3, 1)),
 ])
@@ -79,7 +79,6 @@ print(len(dataset))
 in_channels = num_class_labels if with_condition else 1
 out_channels = 1
 
-
 model = create_model(input_size, num_channels, num_res_blocks, in_channels=in_channels, out_channels=out_channels).cuda()
 
 diffusion = GaussianDiffusion(
@@ -105,9 +104,9 @@ trainer = Trainer(
     train_batch_size = args.batchsize,
     train_lr = train_lr,
     train_num_steps = args.epochs,         # total training steps
-    gradient_accumulate_every = 2,    # gradient accumulation steps
+    gradient_accumulate_every = 2,    # gradient accumulation steps, 2
     ema_decay = 0.995,                # exponential moving average decay
-    fp16 = False,#True,                       # turn on mixed precision training with apex
+    fp16 = True,#True,                       # turn on mixed precision training with apex
     with_condition=with_condition,
     save_and_sample_every = save_and_sample_every,
 )

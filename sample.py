@@ -62,10 +62,19 @@ def resize_img_4d(input_img):
 
 def label2masks(masked_img):
     result_img = np.zeros(masked_img.shape + (in_channels-1,))
-    result_img[masked_img==LabelEnum.BRAINAREA.value, 0] = 1
-    result_img[masked_img==LabelEnum.TUMORAREA.value, 1] = 1
+   # result_img[masked_img==LabelEnum.BRAINAREA.value, 0] = 1
+   # result_img[masked_img==LabelEnum.TUMORAREA.value, 1] = 1
+   # result_img[masked_img==LabelEnum.BS.value, 0] = 1
+   # result_img[masked_img==LabelEnum.CBM.value, 1] = 1
+   # result_img[masked_img==LabelEnum.CSF.value, 2] = 1
+   # result_img[masked_img==LabelEnum.GM.value, 3] = 1
+   # result_img[masked_img==LabelEnum.LV.value, 4] = 1
+   # result_img[masked_img==LabelEnum.SGM.value, 5] = 1
+   # result_img[masked_img==LabelEnum.WM.value, 6] = 1
+    result_img[masked_img==LabelEnum.FLUID.value, 0] = 1
+    result_img[masked_img==LabelEnum.CORTEX.value, 1] = 1
+    result_img[masked_img==LabelEnum.REST.value, 2] = 1
     return result_img
-
 
 input_transform = Compose([
     Lambda(lambda t: torch.tensor(t).float()),
@@ -83,7 +92,7 @@ diffusion = GaussianDiffusion(
     image_size = input_size,
     depth_size = depth_size,
     timesteps = args.timesteps,   # number of steps
-    loss_type = 'L1', 
+    loss_type = 'l1', 
     with_condition=True,
 ).cuda()
 diffusion.load_state_dict(torch.load(weightfile)['ema'])
@@ -130,7 +139,7 @@ for k, inputfile in enumerate(mask_list):
             counter = counter + 1
             sampleImage = sampleImages[b][0]
             sampleImage = sampleImage.numpy()
-            sampleImage=sampleImage.reshape(refImg.shape)
+            sampleImage=sampleImage.reshape((input_size, input_size, depth_size))
             nifti_img = nib.Nifti1Image(sampleImage, affine=ref.affine)
             nib.save(nifti_img, os.path.join(img_dir, f'{counter}_{msk_name}'))
             nib.save(ref, os.path.join(msk_dir, f'{counter}_{msk_name}'))

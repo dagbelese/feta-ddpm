@@ -262,7 +262,7 @@ class UNetModel(nn.Module):
 
         hs = []
         emb = self.time_embed(timestep_embedding(timesteps, self.model_channels))
-
+        
         if self.num_classes is not None:
             assert y.shape == (x.shape[0],)
             emb = emb + self.label_emb(y)
@@ -286,14 +286,14 @@ def create_model(
     channel_mult="",
     learn_sigma=False,
     class_cond=False,
-    use_checkpoint=False,
-    attention_resolutions="16",
-    num_heads=1,
+    use_checkpoint=False, # False 
+    attention_resolutions="4,8,16", # "16"
+    num_heads=4,
     num_head_channels=-1,
     num_heads_upsample=-1,
     use_scale_shift_norm=False,
     dropout=0,
-    resblock_updown=False,
+    resblock_updown=False, 
     use_fp16=False,
     use_new_attention_order=False,
     in_channels=1,
@@ -304,8 +304,10 @@ def create_model(
             channel_mult = (0.5, 1, 1, 2, 2, 4, 4)
         elif image_size == 256:
             channel_mult = (1, 1, 2, 2, 4, 4)
+        elif image_size == 160:
+            channel_mult = (1, 1, 2, 2, 3, 4) 
         elif image_size == 128:
-            channel_mult = (1, 1, 2, 3, 4)
+            channel_mult = (1, 1, 2, 3, 4) 
         elif image_size == 64:
             channel_mult = (1, 2, 3, 4)
         else:
