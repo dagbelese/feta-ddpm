@@ -1,7 +1,9 @@
 <!-- #region -->
 # Semantic fetal MR image synthesis using Med-DDPM
 
-Semester project description
+This is a forked Github repository containing the code used for my semester project conducted in the University Children's Hospital Zürich and Swiss Federal Institute of Technology.
+
+In this semester project, [Med-DDPM]([https://github.com/fepegar/torchio](https://github.com/mobaidoctor/med-ddpm/tree/main)), a denoising diffusion probabilistic model, is employed to generate high-quality 3D MR images of the developing human brain, attempting to address some of the limitations of traditional GAN-based methods. The work focuses on developing and refining the existing Med-DDPM for semantic 3D MRI synthesis using brain tissue label maps and compares its performance with the SPADE GAN method. Results demonstrate Med-DDPM's capabilities to generate realistic, anatomically detailed, coherent fetal MR images with improved statistical accuracy and signal clarity. However, it falls short in reliably and consistently producing these high-quality images compared to SPADE GAN. This exploration contributes to the field of medical imaging by offering a novel approach for generating realistic fetal MRIs from a label map representing anatomical brain tissues.
 
 <!-- #endregion -->
 
@@ -30,11 +32,11 @@ Specify dataset paths using \`--inputfolder\` and \`--targetfolder\`:
 
 ### Image Dimensions
 
-- Whole-head MRI synthesis: 128x128x128 - 256x256x256
+- Fetal MRI synthesis: 128x128x128 - 256x256x256
 - Optionally: Define image size in \`diffusion_model/unet.py\`
 
 ```
-whole-head MRI synthesis:$ ./scripts/train.sh
+fetal MRI synthesis:$ ./scripts/train.sh
 ```
 
 ## 🧠 Model Weights
@@ -50,7 +52,7 @@ To create images, follow these steps:
 
 ### Image Dimensions
 
-- Whole-head MRI synthesis: 128x128x128 - 256x256x256
+- Fetal MRI synthesis: 128x128x128 - 256x256x256
 
 ### Usage
 
@@ -58,7 +60,7 @@ To create images, follow these steps:
 - Determine the input mask file using \`--inputfolder\`.
 
 ```
-whole-head MRI synthesis:$ ./scripts/sample.sh
+fetal MRI synthesis:$ ./scripts/sample.sh
 ```
 
 
